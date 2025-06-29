@@ -49,7 +49,7 @@ def process_pdfs_with_year(root_folder, output_file="pdf_word_counts_with_year.x
             if filename.lower().endswith('.pdf'):
                 pdf_files.append((foldername, filename))
     
-    # Sort files naturally (e.g., 1984-2 comes before 1984-10)
+    # Sort files naturally (ex., 1984-2 comes before 1984-10)
     pdf_files = natsorted(pdf_files, key=lambda x: os.path.basename(x[0]) + x[1])
 
     # Process files with progress bar
