@@ -2,6 +2,7 @@ import os
 import PyPDF2
 import pandas as pd
 from tqdm import tqdm
+from natsort import natsorted
 import re
 
 def extract_year_from_folder(folder_name):
@@ -27,7 +28,13 @@ def process_pdfs_with_year(root_folder, output_file="pdf_word_counts_with_year.x
         "pipe inspection", "single-wheel", "slam", "legged", "quadrupedal",
         "autonomous navigation", "self-driving", "uav", "drone", "autonomous vehicle",
         "field robotics", "ground vehicle", "robotic wheelchair", "agv", "mobile robot",
-        "aerial robot", "quadruped", "locomotion", "urban environments", "climbing", "jumping"
+        "aerial robot", "quadruped", "locomotion", "urban environments", "climbing", "jumping", 
+        "future", "years", "generations", "opportunity", "opportunities", "possibility", 
+        "possibilities", "evolve", "traditional", "promise", "promises", "improvement", 
+        "improve", "growing", "development", "outlook", "predict", "prediction", "forecast", 
+        "anticipate", "trend", "moving towards", "expect", "evolution", "insight", "projection", 
+        "prospect", "believe", "potential", "heading", "alternative", "forward", "growth rate", 
+        "growth", "industry leader", "industry insider", "industry"
     ]
     
     data = []
@@ -42,6 +49,9 @@ def process_pdfs_with_year(root_folder, output_file="pdf_word_counts_with_year.x
             if filename.lower().endswith('.pdf'):
                 pdf_files.append((foldername, filename))
     
+    # Sort files naturally (e.g., 1984-2 comes before 1984-10)
+    pdf_files = natsorted(pdf_files, key=lambda x: os.path.basename(x[0]) + x[1])
+
     # Process files with progress bar
     for foldername, filename in tqdm(pdf_files, desc="Processing PDFs", unit="file"):
         pdf_path = os.path.join(foldername, filename)
@@ -49,13 +59,17 @@ def process_pdfs_with_year(root_folder, output_file="pdf_word_counts_with_year.x
         counts, error = count_words_in_pdf(pdf_path, words_to_count)
         
         if counts:
+            total_words = sum(counts.values())
             entry = {
+                "id": len(data) + 1,
                 "PDF Name": filename,
                 "Folder": relative_folder,
-                "Year": extract_year_from_folder(os.path.basename(foldername))
+                "Year": extract_year_from_folder(os.path.basename(foldername)),
+                "Sum": total_words
             }
             entry.update(counts)
             data.append(entry)
+
         else:
             error_log.append(f"{pdf_path} | Error: {error}")
     
@@ -71,7 +85,7 @@ def process_pdfs_with_year(root_folder, output_file="pdf_word_counts_with_year.x
     if error_log:
         print(f"Encountered {len(error_log)} errors (see processing_errors.log)")
         
-PDF_FOLDER = r"C:\Users\mateo\ICRA Articles" # Update as needed
+PDF_FOLDER = r"C:\Users\mateo\..." # Update as needed
 
 if __name__ == "__main__":
     process_pdfs_with_year(PDF_FOLDER)
