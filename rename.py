@@ -34,7 +34,7 @@ sheet_data.rename(columns={'index': 'RowNumber'}, inplace=True)
 sheet_data['SanitizedTitle'] = sheet_data['Document Title'].apply(sanitize_filename)
 
 # Step 3: List files in directory
-directory = r"C:\Users\mateo\ICRA Articles\1996 ICRA Articles"
+directory = r"C:\Users\mateo\..." # Update as needed
 files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
 
 # Step 4: Match and rename files
