@@ -1,4 +1,4 @@
-# To use it for local machine: 
+# To use for local machine: 
 # - Rename google_sheet_url for your own personal Google Sheet, making sure the Sheet is shared publically (not private). 
 #   The Sheet can be made by going to the year's IEEE site, click export (make sure you have no selections so it can send a 1,000 file .csv), and then importing it to Google Sheets.
 #   Then rename the google_sheet_url the same just change the "1D5DEnD0hrBwWdwOndquRh_DVe-Ml03l67z9EDOkrRaw" to your personal url.
